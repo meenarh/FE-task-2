@@ -8,6 +8,8 @@ import { useState, useMemo } from "react";
 function Home() {
   const [stateData, setStateData] = useState(null);
   const [inputState, setInputState] = useState("");
+  // const [figures, setFigures] = useState({})
+
 
   const { data, isPending } = useFetch(
     "https://covidnigeria.herokuapp.com/api"
@@ -19,16 +21,28 @@ function Home() {
     setStateData(stats.data.states);
   }
 
-  console.log(stateData);
+  //console.log(stateData[0]);
   console.log(inputState);
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //check if submitted word matches any state name, display match in html
+    stateData.filter((data) => {
+      // eslint-disable-next-line eqeqeq
+      if(data.state.toLowerCase() == inputState.toLowerCase()){ 
+        
+      }
+    })
+// problems: destructuring the data and passing it down to the appropriate returned html
+//     check if input matches any state name
+//     if yes return the state details in react
+//     if no, create a 'state not found component' to return
   };
 
   return (
+
+  
+
     <div className="home">
       <h1>Nigeria's COVID-19 Statistics</h1>
       <p className="info">
@@ -72,7 +86,7 @@ function Home() {
         </div>
       </div>
 
-      <h3>Lagos</h3>
+      <h3>{}</h3>
 
       <div className="results">
         <div>
