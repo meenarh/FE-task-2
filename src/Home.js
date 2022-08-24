@@ -30,7 +30,7 @@ function Home() {
     stateData.filter((data) => {
       // eslint-disable-next-line eqeqeq
       if(data.state.toLowerCase() == inputState.toLowerCase()){ 
-        
+        console.log(data)
       }
     })
 // problems: destructuring the data and passing it down to the appropriate returned html
