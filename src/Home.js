@@ -8,12 +8,25 @@ import { useState, useMemo } from "react";
 function Home() {
   const [stateData, setStateData] = useState(null);
   const [inputState, setInputState] = useState("");
-  // const [figures, setFigures] = useState({})
+  const [displayState, setDisplayState] = useState({});
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const STATE = stateData.filter((data) => {
+      // eslint-disable-next-line eqeqeq
+      return data.state.toLowerCase() == inputState.toLowerCase()
+        ? data.state.toLowerCase()
+        : null;
+      //add error management for when no matching states is found
+    });
+    setDisplayState(...STATE);
+  };
 
   const { data, isPending } = useFetch(
     "https://covidnigeria.herokuapp.com/api"
   );
+
+  console.log(displayState.state);
 
   const stats = useMemo(() => data, [data]);
 
@@ -21,28 +34,9 @@ function Home() {
     setStateData(stats.data.states);
   }
 
-  //console.log(stateData[0]);
-  console.log(inputState);
-
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    stateData.filter((data) => {
-      // eslint-disable-next-line eqeqeq
-      if(data.state.toLowerCase() == inputState.toLowerCase()){ 
-        console.log(data)
-      }
-    })
-// problems: destructuring the data and passing it down to the appropriate returned html
-//     check if input matches any state name
-//     if yes return the state details in react
-//     if no, create a 'state not found component' to return
-  };
+  //console.log(stateData);
 
   return (
-
-  
-
     <div className="home">
       <h1>Nigeria's COVID-19 Statistics</h1>
       <p className="info">
@@ -58,7 +52,7 @@ function Home() {
           onChange={(e) => setInputState(e.target.value)}
           placeholder="Enter state"
         ></input>
-        <button type="submit">Submit Form</button>
+        <button type="submit">Submit</button>
       </form>
 
       <h2>Total Statistics of Covid-19 Cases and Death in Nigeria</h2>
@@ -86,24 +80,24 @@ function Home() {
         </div>
       </div>
 
-      <h3>{}</h3>
+      <h3>{displayState.state}</h3>
 
       <div className="results">
         <div>
           <h4>Confirmed Cases</h4>
-          <p>3298030</p>
+          <p>{displayState.confirmedCases}</p>
         </div>
         <div>
           <h4>Cases on Admission</h4>
-          <p>28328332</p>
+          <p>{displayState.casesOnAdmission}</p>
         </div>
         <div>
           <h4>Discharged</h4>
-          <p>3939209</p>
+          <p>{displayState.discharged}</p>
         </div>
         <div>
           <h4>Death</h4>
-          <p>9493039</p>
+          <p>{displayState.death}</p>
         </div>
       </div>
     </div>
