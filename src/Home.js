@@ -34,7 +34,11 @@ function Home() {
     setStateData(stats.data.states);
   }
 
-  //console.log(stateData);
+  //add auto-complete functionality to state name searching, 
+  //on keypress matching states should be displyed under search box
+  //switch state management to redux
+  //beautify the fuck out of the page
+
 
   return (
     <div className="home">
