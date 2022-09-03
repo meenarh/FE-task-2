@@ -15,9 +15,7 @@ function DataFetch() {
   return { data, isPending };
 }
 
-setTimeout(() => {
-  //DataFetch()
-}, 5000);
+
 
 class DisplayStats extends Component {
   render() {
@@ -93,12 +91,13 @@ class SearchBar extends Component {
 }
 
 class Home extends Component {
-  
-render() {
+  //const {data, isPending} = DataFetch()
+//figure out the right way to grab data from data fetch and pass as props to Home Comp
+  render() {
     return (
       <div>
         <SearchBar />
-        <DisplayStats statsData/>
+        <DisplayStats statsData={data}/>
       </div>
     );
   }
