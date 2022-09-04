@@ -5,38 +5,39 @@ const useFetch = (url) => {
     const [isPending, setIsPending] = useState(true)
     const [errMessage, setErrMessage] = useState(null);
 
-
- 
-
-   useEffect(() => {
+    
+    useEffect(() => {
 
     const abortCont = new AbortController();
-        fetch(url, {signal: abortCont.signal})
-            .then(res => {
-                //console.log(res)
-                if(!res.ok ){
-                    throw Error('data resource not okay') 
-                }return res.json() ;
-                
-            })
-            .then((data) => {
-                 setBlogs(data)
-                 setIsPending(false)
-                 setErrMessage(null)
-            })
-            .catch((err) => {
-                if(err.name === 'AbortError'){
-                    console.log('fetch aborted')
-                }else{
-                    setErrMessage(err.message)
-                    setIsPending(false)
-                }
-                 
-                
-            })
 
+        fetch(url)
+        .then(res => {
+            //console.log(res)
+            if(!res.ok ){
+                throw Error('data resource not okay') 
+            }return res.json() ;
+            
+        })
+        .then((data) => {
+            console.log(data)
+            setBlogs(data)
+            setIsPending(false)
+            setErrMessage(null)
+        })
+        .catch((err) => {
+            if(err.name === 'AbortError'){
+                console.log('fetch aborted')
+            }else{
+                setErrMessage(err.message)
+                setIsPending(false)
+            }
+            
+            
+        })
+        
     return () => {abortCont.abort()}
-   }, [url])
+}, [url])
+
     
     return { data, isPending, errMessage};
 }

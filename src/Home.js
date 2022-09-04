@@ -1,71 +1,73 @@
 import "./App.css";
 //import { BiSearchAlt } from "react-icons/bi";
 import useFetch from "./useFetch";
-import { Component, useState } from "react";
+import { Component, useMemo, useState } from "react";
 
-//https://covidnigeria.herokuapp.com/api
-
-
+//
 
 function DataFetch() {
-  const { data, isPending } = useFetch(
+  const { data } = useFetch(
     "https://covidnigeria.herokuapp.com/api"
   );
-
-  return { data, isPending };
+  //console.log(data)
+  return { data };
 }
-
 
 
 class DisplayStats extends Component {
   render() {
-    const covidData =  this.props.statsData
-    //console.log(covidData)
+    let covidData;
+    if(this.props.statsData === null){
+      return 
+    }else{
+      covidData =  this.props.statsData
+    }
+    // console.log({...covidData.data.data.states[0]})
     return (
       <div className="stats">
         <div className="national-stats">
+          <h2>Nigeria</h2>
+          <br></br>
           <div>
+            <p>4394898</p>
             <h4>Samples Tested</h4>
-            <p>43948398</p>
           </div>
           <div>
-            <h4>Confirmed Cases</h4>
             <p>1809212</p>
+            <h4>Confirmed Cases</h4>
           </div>
           <div>
-            <h4>Active Cases</h4>
             <p>4348389</p>
+            <h4>Active Cases</h4>
           </div>
           <div>
-            <h4>Discharged</h4>
             <p>390293</p>
+            <h4>Discharged</h4>
           </div>
           <div>
-            <h4>Death</h4>
-            <p>48430309</p>
+            <p>409</p>
+            <h4>Deaths</h4>
           </div>
         </div>
 
         <div className="searched-stats">
+          <h2>State: </h2>
+          <br></br>
           <div>
-            <h2>State</h2>
-            <p>{covidData}</p>
-          </div>
-          <div>
+            <p>60900</p>
             <h4>Confirmed Cases</h4>
-            <p>{}</p>
           </div>
           <div>
+            <p>7890</p>
             <h4>Cases on Admission</h4>
-            <p>{}</p>
           </div>
           <div>
+            <p>74830</p>
             <h4>Discharged</h4>
-            <p>{}</p>
           </div>
           <div>
-            <h4>Death</h4>
-            <p>{}</p>
+            <p>89</p>
+            <h4>Deaths</h4>
           </div>
         </div>
       </div>
@@ -76,31 +78,36 @@ class DisplayStats extends Component {
 class SearchBar extends Component {
   render() {
     return (
-      <form className="search" onSubmit>
-        <input
-          type="text"
-          name="search"
-          value
-          onChange
-          placeholder="Enter state"
-        ></input>
-        <button type="submit">Submit</button>
-      </form>
+      <>
+        <form className="search">
+          <input
+            type="text"
+            name="search"
+            // value
+            // onChange
+            placeholder="Enter state"
+          ></input>
+          <button type="submit">Submit</button>
+        </form>
+        <h1>Covid Statistics</h1>
+      </>
     );
   }
 }
 
-class Home extends Component {
-  //const {data, isPending} = DataFetch()
-//figure out the right way to grab data from data fetch and pass as props to Home Comp
-  render() {
+function Home (){
+    let data
+    //prevent second rerender after grabbing data
+    //let data persit long enough to be used?
+    //locale storage and error management
+    data = useMemo(() => DataFetch(), []);
+
     return (
       <div>
         <SearchBar />
-        <DisplayStats statsData={data}/>
+        {data ? <DisplayStats statsData={data} /> : null}
       </div>
     );
-  }
 }
 export { DataFetch };
 export default Home;
