@@ -1,51 +1,39 @@
 import "./App.css";
 //import { BiSearchAlt } from "react-icons/bi";
-import useFetch from "./useFetch";
-import { Component, useMemo, useState } from "react";
+import { Component,  useState } from "react";
+import { useEffect } from "react";
 
-//
-
-function DataFetch() {
-  const { data } = useFetch(
-    "https://covidnigeria.herokuapp.com/api"
-  );
-  //console.log(data)
-  return { data };
-}
 
 
 class DisplayStats extends Component {
   render() {
-    let covidData;
-    if(this.props.statsData === null){
-      return 
-    }else{
-      covidData =  this.props.statsData
-    }
-    // console.log({...covidData.data.data.states[0]})
+
+    let data = this.props.data
+ 
+    console.log(data)
     return (
       <div className="stats">
         <div className="national-stats">
           <h2>Nigeria</h2>
           <br></br>
           <div>
-            <p>4394898</p>
+            <p>{data.totalSamplesTested}</p>
             <h4>Samples Tested</h4>
           </div>
           <div>
-            <p>1809212</p>
+            <p>{data.totalConfirmedCases}</p>
             <h4>Confirmed Cases</h4>
           </div>
           <div>
-            <p>4348389</p>
+            <p>{data.totalActiveCases}</p>
             <h4>Active Cases</h4>
           </div>
           <div>
-            <p>390293</p>
+            <p>{data.discharged}</p>
             <h4>Discharged</h4>
           </div>
           <div>
-            <p>409</p>
+            <p>{data.death}</p>
             <h4>Deaths</h4>
           </div>
         </div>
@@ -96,18 +84,27 @@ class SearchBar extends Component {
 }
 
 function Home (){
-    let data
-    //prevent second rerender after grabbing data
-    //let data persit long enough to be used?
-    //locale storage and error management
-    data = useMemo(() => DataFetch(), []);
+
+    const [covidData, setCovidData] = useState([])
+
+    useEffect(function getData(){
+      fetch("https://covidnigeria.herokuapp.com/api")
+        .then(response => response.json())
+        .then(({data}) => {
+          setCovidData(data)
+        })
+        
+      }, [ ])
+      //why does it log 4 times? 
+      //console.log(covidData)
+
 
     return (
       <div>
         <SearchBar />
-        {data ? <DisplayStats statsData={data} /> : null}
+        {covidData === [] ? null : <DisplayStats data={covidData}/>}
       </div>
     );
 }
-export { DataFetch };
+export {  };
 export default Home;
