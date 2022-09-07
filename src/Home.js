@@ -1,16 +1,13 @@
 import "./App.css";
 //import { BiSearchAlt } from "react-icons/bi";
-import { Component,  useState } from "react";
+import { Component, useState } from "react";
 import { useEffect } from "react";
-
-
 
 class DisplayStats extends Component {
   render() {
+    let data = this.props.data;
 
-    let data = this.props.data
- 
-    console.log(data)
+    //console.log(data);
     return (
       <div className="stats">
         <div className="national-stats">
@@ -38,7 +35,16 @@ class DisplayStats extends Component {
           </div>
         </div>
 
-        <div className="searched-stats">
+        
+      </div>
+    );
+  }
+}
+
+class SearchedStateStats extends Component{
+  render(){
+    return (
+      <div className="searched-stats">
           <h2>State: </h2>
           <br></br>
           <div>
@@ -58,21 +64,24 @@ class DisplayStats extends Component {
             <h4>Deaths</h4>
           </div>
         </div>
-      </div>
-    );
+    )
   }
 }
 
 class SearchBar extends Component {
-  render() {
+  
+  
+  render() {  
+
+
     return (
       <>
-        <form className="search">
+        <form className="search" onSubmit={this.props.handleSubmit}>
           <input
             type="text"
             name="search"
-            // value
-            // onChange
+            value={this.props.userInput}
+            onChange={this.props.handleChange}
             placeholder="Enter state"
           ></input>
           <button type="submit">Submit</button>
@@ -83,28 +92,36 @@ class SearchBar extends Component {
   }
 }
 
-function Home (){
+function Home() {
+  const [covidData, setCovidData] = useState([]);
+  const [userInput, setUserInput] = useState(null);
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    //filter through covid data with userInput,
+    //  return specific state or "Not found to SearchStateStats"
+     // fix style.
+    console.log(userInput)
 
-    const [covidData, setCovidData] = useState([])
+  }
 
-    useEffect(function getData(){
-      fetch("https://covidnigeria.herokuapp.com/api")
-        .then(response => response.json())
-        .then(({data}) => {
-          setCovidData(data)
-        })
-        
-      }, [ ])
-      //why does it log 4 times? 
-      //console.log(covidData)
+  useEffect(function getData() {
+    fetch("https://covidnigeria.herokuapp.com/api")
+      .then((response) => response.json())
+      .then(({ data }) => {
+        setCovidData(data);
+      });
+  }, []);
+  //why does it log 4 times?
+  //console.log(covidData)
+  //console.log(userInput)
 
-
-    return (
-      <div>
-        <SearchBar />
-        {covidData === [] ? null : <DisplayStats data={covidData}/>}
-      </div>
-    );
+  return (
+    <div className="layout">
+      <SearchBar className='searchBar' handleSubmit={(e) => handleSubmit(e)} text={userInput} handleChange={(e) => setUserInput(e.target.value)} />
+      {covidData === [] ? null : <DisplayStats className='nationalStats' data={covidData} />}
+      <SearchedStateStats className='searchStats'/>
+    </div>
+  );
 }
-export {  };
+export {};
 export default Home;

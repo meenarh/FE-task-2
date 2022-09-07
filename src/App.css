@@ -8,42 +8,21 @@
   body {
     font-family: "Cabin", Arial, Geneva, sans-serif;
   }
-  .stats{
-    display: flex;
-    padding: 10px 40px;
-    justify-content: space-between;
+  .searchStats{
+    grid-area: side1;
   }
-p{
-  /* font-family; :  */
-  font-size: x-large;
-  padding: 0;
-  margin: 10px;
-}
-h1{
-  text-align: center;
-}
-h2{
-  font-weight: bolder;
-}
-  .search{
-    display: flex;
-    justify-content: center;
-    margin: 20px auto;
-    height: 55px;
+  .nationalStats{
+    grid-area: side2;
   }
-  .national-stats div, .searched-stats div{
-    align-items: center;
-    display: flex;
-    flex-flow: column nowrap;
-    line-height: 0;
-    margin-bottom: 20px;
+  .searchBar{
+    grid-area: top;
   }
-
-/* use grids display Nigeria beneath state, each horizontal and vertically stacked */
-  input{
-    width: 80vw;
-    border-radius: 10px;
-  }
-  button{
-    border-radius: 10px;
+  .layout{
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+    'top top top'
+    'top top top'
+    'side1 ... side2';
   }
