@@ -1,1 +1,8 @@
 1. Name classes and variables better.
+
+2. error management for when no state matches filter
+- stop app from completely breaking
+- display relevant message
+- style message
+
+3. Fix Landscape view
