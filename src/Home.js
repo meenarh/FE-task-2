@@ -9,85 +9,76 @@ class DisplayStats extends Component {
 
     //console.log(data);
     return (
-      <div className="stats">
-        <div className="national-stats">
-          <h2>Nigeria</h2>
-          <br></br>
-          <div>
+      <div className="country-stats wrapper">
+        <h2>Nigeria</h2>
+        
+          <div className="data-box">
             <p>{data.totalSamplesTested}</p>
             <h4>Samples Tested</h4>
           </div>
-          <div>
+          <div className="data-box">
             <p>{data.totalConfirmedCases}</p>
             <h4>Confirmed Cases</h4>
           </div>
-          <div>
+          <div className="data-box">
             <p>{data.totalActiveCases}</p>
             <h4>Active Cases</h4>
           </div>
-          <div>
+          <div className="data-box">
             <p>{data.discharged}</p>
             <h4>Discharged</h4>
           </div>
-          <div>
+          <div className="data-box">
             <p>{data.death}</p>
             <h4>Deaths</h4>
           </div>
-        </div>
-
-        
       </div>
     );
   }
 }
 
-class SearchedStateStats extends Component{
-  render(){
+class SearchedStateStats extends Component {
+  render() {
     return (
-      <div className="searched-stats">
-          <h2>State: </h2>
-          <br></br>
-          <div>
-            <p>60900</p>
-            <h4>Confirmed Cases</h4>
-          </div>
-          <div>
-            <p>7890</p>
-            <h4>Cases on Admission</h4>
-          </div>
-          <div>
-            <p>74830</p>
-            <h4>Discharged</h4>
-          </div>
-          <div>
-            <p>89</p>
-            <h4>Deaths</h4>
-          </div>
+      <div className="state-stats wrapper">
+        <h2>State</h2>
+        <div className="data-box">
+          <p>60900</p>
+          <h4>Confirmed Cases</h4>
         </div>
-    )
+        <div className="data-box">
+          <p>7890</p>
+          <h4>Cases on Admission</h4>
+        </div>
+        <div className="data-box">
+          <p>74830</p>
+          <h4>Discharged</h4>
+        </div>
+        <div className="data-box">
+          <p>89</p>
+          <h4>Deaths</h4>
+        </div>
+      </div>
+    );
   }
 }
 
 class SearchBar extends Component {
-  
-  
-  render() {  
-
-
+  render() {
     return (
-      <>
+      <div className="heading-searchbar wrapper">
+        <h1>Covid Statistics</h1>
         <form className="search" onSubmit={this.props.handleSubmit}>
           <input
             type="text"
             name="search"
             value={this.props.userInput}
             onChange={this.props.handleChange}
-            placeholder="Enter state"
+            placeholder="type state name"
           ></input>
-          <button type="submit">Submit</button>
+          <button type="submit">search</button>
         </form>
-        <h1>Covid Statistics</h1>
-      </>
+      </div>
     );
   }
 }
@@ -96,13 +87,12 @@ function Home() {
   const [covidData, setCovidData] = useState([]);
   const [userInput, setUserInput] = useState(null);
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     //filter through covid data with userInput,
     //  return specific state or "Not found to SearchStateStats"
-     // fix style.
-    console.log(userInput)
-
-  }
+    // fix style.
+    console.log(userInput);
+  };
 
   useEffect(function getData() {
     fetch("https://covidnigeria.herokuapp.com/api")
@@ -112,14 +102,23 @@ function Home() {
       });
   }, []);
   //why does it log 4 times?
-  //console.log(covidData)
-  //console.log(userInput)
+  // console.log(covidData)
+  console.log(userInput)
 
   return (
     <div className="layout">
-      <SearchBar className='searchBar' handleSubmit={(e) => handleSubmit(e)} text={userInput} handleChange={(e) => setUserInput(e.target.value)} />
-      {covidData === [] ? null : <DisplayStats className='nationalStats' data={covidData} />}
-      <SearchedStateStats className='searchStats'/>
+      <SearchBar
+        className="searchBar"
+        handleSubmit={(e) => handleSubmit(e)}
+        text={userInput}
+        handleChange={(e) => setUserInput(e.target.value)}
+      />
+      <div className="data-section">
+        {covidData === [] ? null : (
+          <DisplayStats className="nationalStats" data={covidData} />
+        )}
+        <SearchedStateStats className="searchStats" />
+      </div>
     </div>
   );
 }
