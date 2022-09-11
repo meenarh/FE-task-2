@@ -1,8 +1,8 @@
-1. Name classes and variables better.
+1. rename classes and variables better. find the best-practiced way of doing this
 
 2. error management for when no state matches filter
 - stop app from completely breaking
 - display relevant message
-- style message
+- style error message
 
 3. Fix Landscape view
