@@ -6,3 +6,5 @@
 - style error message
 
 3. Fix Landscape view
+
+4. Add hover effects to form and button.

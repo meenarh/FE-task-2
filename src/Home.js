@@ -2,12 +2,13 @@ import "./App.css";
 //import { BiSearchAlt } from "react-icons/bi";
 import { Component, useState } from "react";
 import { useEffect } from "react";
+import Error from "./Error/Error";
 
 class DisplayStats extends Component {
   render() {
     let data = this.props.data;
 
-    //console.log(data);
+
     return (
       <div className="country-stats wrapper">
         <h2>Nigeria</h2>
@@ -38,6 +39,12 @@ class DisplayStats extends Component {
 }
 
 const SearchedStateStats = ({data}) => {
+  if(!data){
+    return(
+      <Error/>
+    )
+  }
+
   return (
     <div className="state-stats wrapper">
       <h2>{data.state}</h2>
@@ -87,12 +94,14 @@ function Home() {
   const [covidData, setCovidData] = useState([]);
   const [userInput, setUserInput] = useState(null);
   const [states, setStates] = useState('')
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    let states = covidData.states;
-    setStates(states.filter(
+
+    setStates(covidData.states.filter(
       (i) => i.state.toLowerCase() === userInput.toLowerCase()
     ));
+    console.log(states)
   };
 
   useEffect(function getData() {
@@ -104,7 +113,7 @@ function Home() {
       });
   }, []);
   //why does it log 4 times?
-console.log(states)
+
 
 
 
@@ -120,8 +129,7 @@ console.log(states)
         {covidData === [] ? null : (
           <DisplayStats className="nationalStats" data={covidData} />
         )}
-        {/* // eslint-disable-next-line eqeqeq */}
-        { states == [] || undefined ? 'no state found' : <SearchedStateStats className="searchStats" data={states[0]} />}
+        { states === [] || undefined ? <Error/> : <SearchedStateStats className="searchStats" data={states[0]} />}
       </div>
     </div>
   );
