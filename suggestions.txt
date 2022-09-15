@@ -1,10 +1,4 @@
 1. rename classes and variables better. find the best-practiced way of doing this
 
-2. error management for when no state matches filter
-- stop app from completely breaking
-- display relevant message
-- style error message
+2. add a footer giving credit to the creators
 
-3. Fix Landscape view
-
-4. Add hover effects to form and button.
