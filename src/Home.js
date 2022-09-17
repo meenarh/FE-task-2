@@ -1,111 +1,138 @@
 import "./App.css";
 //import { BiSearchAlt } from "react-icons/bi";
-import useFetch from "./useFetch";
-import { useState, useMemo } from "react";
+import { Component, useState } from "react";
+import { useEffect } from "react";
+import Error from "./Error/Error";
 
-//https://covidnigeria.herokuapp.com/api
+class DisplayStats extends Component {
+  render() {
+    let data = this.props.data;
 
-function Home() {
-  const [stateData, setStateData] = useState(null);
-  const [inputState, setInputState] = useState("");
-  const [displayState, setDisplayState] = useState({});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const STATE = stateData.filter((data) => {
-      // eslint-disable-next-line eqeqeq
-      return data.state.toLowerCase() == inputState.toLowerCase()
-        ? data.state.toLowerCase()
-        : null;
-      //add error management for when no matching states is found
-    });
-    setDisplayState(...STATE);
-  };
+    return (
+      <div className="country-stats wrapper">
+        <h2>Nigeria</h2>
 
-  const { data, isPending } = useFetch(
-    "https://covidnigeria.herokuapp.com/api"
-  );
+        <div className="data-box">
+          <p>{data.totalSamplesTested}</p>
+          <h4>Samples Tested</h4>
+        </div>
+        <div className="data-box">
+          <p>{data.totalConfirmedCases}</p>
+          <h4>Confirmed Cases</h4>
+        </div>
+        <div className="data-box">
+          <p>{data.totalActiveCases}</p>
+          <h4>Active Cases</h4>
+        </div>
+        <div className="data-box">
+          <p>{data.discharged}</p>
+          <h4>Discharged</h4>
+        </div>
+        <div className="data-box">
+          <p>{data.death}</p>
+          <h4>Deaths</h4>
+        </div>
+      </div>
+    );
+  }
+}
 
-  console.log(displayState.state);
-
-  const stats = useMemo(() => data, [data]);
-
-  if (!isPending && !stateData) {
-    setStateData(stats.data.states);
+const SearchedStateStats = ({data}) => {
+  if(!data){
+    return(
+      <Error/>
+    )
   }
 
-  //add auto-complete functionality to state name searching, 
-  //on keypress matching states should be displyed under search box
-  //switch state management to redux
-  //beautify the fuck out of the page
+  return (
+    <div className="state-stats wrapper">
+      <h2>{data.state}</h2>
+      <div className="data-box">
+        <p>{data.confirmedCases}</p>
+        <h4>Confirmed Cases</h4>
+      </div>
+      <div className="data-box">
+        <p>{data.casesOnAdmission}</p>
+        <h4>Cases on Admission</h4>
+      </div>
+      <div className="data-box"> 
+        <p>{data.discharged}</p>
+        <h4>Discharged</h4>
+      </div>
+      <div className="data-box">
+        <p>{data.death}</p>
+        <h4>Deaths</h4>
+      </div>
+    </div>
+  );
+};
+
+class SearchBar extends Component {
+  render() {
+    return (
+      <div className="heading-searchbar wrapper">
+        <h1>Covid Statistics</h1>
+        <form className="search" onSubmit={this.props.handleSubmit}>
+          <input
+            type="text"
+            name="search"
+            value={this.props.userInput}
+            onChange={this.props.handleChange}
+            placeholder="type state name"
+          ></input>
+          <button type="submit">search</button>
+        </form>
+      </div>
+    );
+  }
+}
+
+
+
+function Home() {
+  const [covidData, setCovidData] = useState([]);
+  const [userInput, setUserInput] = useState(null);
+  const [states, setStates] = useState('')
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setStates(covidData.states.filter(
+      (i) => i.state.toLowerCase() === userInput.toLowerCase()
+    ));
+    console.log(states)
+  };
+
+  useEffect(function getData() {
+    fetch("https://covidnigeria.herokuapp.com/api")
+      .then((response) => response.json())
+      .then(({ data }) => {
+        setCovidData(data);
+
+      });
+  }, []);
+  //why does it log 4 times?
+
+
 
 
   return (
-    <div className="home">
-      <h1>Nigeria's COVID-19 Statistics</h1>
-      <p className="info">
-        This app is designed to search and display the statistics of Covid-19
-        cases in Nigeria, using an open API.
-      </p>
-
-      <form className="search" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="search"
-          value={inputState}
-          onChange={(e) => setInputState(e.target.value)}
-          placeholder="Enter state"
-        ></input>
-        <button type="submit">Submit</button>
-      </form>
-
-      <h2>Total Statistics of Covid-19 Cases and Death in Nigeria</h2>
-
-      <div className="total">
-        <div>
-          <h4>Samples Tested</h4>
-          <p>43948398</p>
-        </div>
-        <div>
-          <h4>Confirmed Cases</h4>
-          <p>1809212</p>
-        </div>
-        <div>
-          <h4>Active Cases</h4>
-          <p>4348389</p>
-        </div>
-        <div>
-          <h4>Discharged</h4>
-          <p>390293</p>
-        </div>
-        <div>
-          <h4>Death</h4>
-          <p>48430309</p>
-        </div>
-      </div>
-
-      <h3>{displayState.state}</h3>
-
-      <div className="results">
-        <div>
-          <h4>Confirmed Cases</h4>
-          <p>{displayState.confirmedCases}</p>
-        </div>
-        <div>
-          <h4>Cases on Admission</h4>
-          <p>{displayState.casesOnAdmission}</p>
-        </div>
-        <div>
-          <h4>Discharged</h4>
-          <p>{displayState.discharged}</p>
-        </div>
-        <div>
-          <h4>Death</h4>
-          <p>{displayState.death}</p>
-        </div>
+    <div className="layout">
+      <SearchBar
+        className="searchBar"
+        handleSubmit={(e) => handleSubmit(e)}
+        text={userInput}
+        handleChange={(e) => setUserInput(e.target.value)}
+      />
+      <div className="data-section">
+        {covidData === [] ? null : (
+          <DisplayStats className="nationalStats" data={covidData} />
+        )}
+        { states === [] || undefined ? <Error/> : <SearchedStateStats className="searchStats" data={states[0]} />}
       </div>
     </div>
   );
 }
-
+export {};
 export default Home;

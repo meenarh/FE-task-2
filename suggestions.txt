@@ -1,0 +1,4 @@
+1. rename classes and variables better. find the best-practiced way of doing this
+
+2. add a footer giving credit to the creators
+

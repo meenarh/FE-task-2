@@ -1,44 +1,84 @@
-h1, .info{
-  text-align: center;
+html {
+  box-sizing: border-box;
 }
-.home{
-  margin: 30px;
-  padding: 30px;
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
-
-.search{
-  margin-left: 150px;
+body {
+  font-family: "Cabin", Arial, Geneva, sans-serif;
+  background-image: url('https://images.unsplash.com/photo-1491895200222-0fc4a4c35e18?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80');
 }
-
-/* input{
-  margin: auto;
-  padding: auto;
-  display: block;
-} */
-
-button{
-  width: 50px;
-  height: 55px;
-  border-radius: 10px;
+.layout {
+  display: grid;
+  margin: 15px auto;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
 }
-
-input{
-  height: 50px;
-  width: 500px;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 10px;
-}
-
-.total, .results{
+.heading-searchbar {
+  grid-row: 1/2;
+  grid-column: 1/3;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+input, button{
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid yellowgreen;
+  border-right: 1px solid yellowgreen;
+  box-shadow: 0px 3px 3px rgb(183, 192, 183);
+  font-size: small;
+  padding: 5px;
+}
+button:hover{
+  background-color: yellowgreen;
+  transition: all 0.1s ease-out;
+  /* scale: 1.2; */
 }
 
-.total{
-  flex-direction: row;
-}
 
+.data-section{
+  margin: 5px auto;
+  display: grid;
+  grid-gap: 70px;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+.data-box{
+  display: flex;
+  flex-flow: column nowrap;
+  align-content: center;
+  margin:  0px auto 19px
+}
+p, h4{
+  margin: 1px ;
+}
+p{
+  font-size: 30px;
+  font-weight: 300;
+  /* lin */
+}
+h1{
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  white-space: nowrap;;
+}
 h4{
-  padding-right: 50px;
+  font-size: smaller;
+  font-weight: 100;
+  font-style: italic;
+  color: rgb(130, 136, 142);
 }
+h2{
+  color: green;
+  font-weight: 300;
+  text-decoration: underline;
+}
+@media(min-width: 700px){
+  
+}
+
